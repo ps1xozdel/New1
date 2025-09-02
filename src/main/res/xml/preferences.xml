@@ -182,6 +182,20 @@
             android:key="theme"
             android:summary="@string/pref_theme_options_summary"
             android:title="@string/pref_theme_options" />
+            <PreferenceCategory android:title="Пользовательские цвета" android:key="custom_colors">
+                <eu.siacs.conversations.ui.ColorPickerPreference
+                    android:key="custom_bg_color"
+                    android:title="Цвет фона"
+                    android:summary="Выберите цвет фона" />
+                <eu.siacs.conversations.ui.ColorPickerPreference
+                    android:key="custom_accent_color"
+                    android:title="Цвет акцента"
+                    android:summary="Выберите цвет акцента" />
+                <eu.siacs.conversations.ui.ColorPickerPreference
+                    android:key="custom_text_color"
+                    android:title="Цвет текста"
+                    android:summary="Выберите цвет текста" />
+            </PreferenceCategory>
         <ListPreference
             android:defaultValue="@string/quick_action"
             android:dialogTitle="@string/choose_quick_action"

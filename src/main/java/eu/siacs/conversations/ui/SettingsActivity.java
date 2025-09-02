@@ -85,11 +85,22 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
         mSettingsFragment.setActivityIntent(getIntent());
         this.mTheme = findTheme();
         setTheme(this.mTheme);
-        getWindow()
-                .getDecorView()
-                .setBackgroundColor(
-                        StyledAttributes.getColor(this, R.attr.color_background_primary));
-        setSupportActionBar(findViewById(R.id.toolbar));
+        // Применение пользовательских цветов
+        int bgColor = ColorPickerPreference.getSavedColor(this, "custom_bg_color", StyledAttributes.getColor(this, R.attr.color_background_primary));
+        int accentColor = ColorPickerPreference.getSavedColor(this, "custom_accent_color", StyledAttributes.getColor(this, R.attr.colorAccent));
+        int textColor = ColorPickerPreference.getSavedColor(this, "custom_text_color", StyledAttributes.getColor(this, R.attr.color_text_primary));
+        getWindow().getDecorView().setBackgroundColor(bgColor);
+        // Пример применения акцентного и текстового цвета (можно расширить на другие элементы)
+        View toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            toolbar.setBackgroundColor(accentColor);
+        }
+        View rootView = getWindow().getDecorView();
+        if (rootView != null) {
+            rootView.setForeground(null);
+            // Можно добавить кастомизацию текста, если есть доступ к TextView
+        }
+        setSupportActionBar(toolbar);
         configureActionBar(getSupportActionBar());
     }
 
@@ -508,6 +519,8 @@ public class SettingsActivity extends XmppActivity implements OnSharedPreference
             }
         } else if (name.equals(PREVENT_SCREENSHOTS)) {
             SettingsUtils.applyScreenshotPreventionSetting(this);
+        } else if (name.equals("custom_bg_color") || name.equals("custom_accent_color") || name.equals("custom_text_color")) {
+            recreate();
         } else if (UnifiedPushDistributor.PREFERENCES.contains(name)) {
             final String pushServerPreference =
                     Strings.nullToEmpty(preferences.getString(
